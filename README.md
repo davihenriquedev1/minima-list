@@ -1,36 +1,80 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Todo List Application
 
-## Getting Started
+Este é um projeto de uma aplicação de lista de tarefas (Minima List) desenvolvida com **React**, utilizando **TypeScript** e **TailwindCSS** para a interface. O objetivo é proporcionar uma experiência simples e fluida para gerenciar tarefas.
 
-First, run the development server:
+## Funcionalidades
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- Adicionar novas tarefas.
+- Marcar tarefas como concluídas.
+- Reordenar automaticamente as tarefas para que as concluídas fiquem no final da lista.
+- Efeitos visuais para destacar mudanças recentes nas tarefas.
+
+## Tecnologias Utilizadas
+
+- **React** com Hooks para gerenciamento de estado.
+- **TypeScript** para tipagem estática e maior robustez no código.
+- **TailwindCSS** para estilização rápida e eficiente.
+
+## Estrutura do Projeto
+
+```
+src/
+├── components/
+│   ├── TodoItem.tsx       # Componente individual de uma tarefa
+├── types/
+│   ├── Item.ts            # Tipo para representar uma tarefa
+├── app/
+│   ├── page.tsx           # Página principal da aplicação
+└── styles/                # Estilos globais (configurado pelo TailwindCSS)
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Como Executar o Projeto
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. Clone este repositório:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+   ```bash
+   git clone <URL_DO_REPOSITORIO>
+   ```
 
-## Learn More
+2. Acesse a pasta do projeto:
 
-To learn more about Next.js, take a look at the following resources:
+   ```bash
+   cd <PASTA_DO_PROJETO>
+   ```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+3. Instale as dependências:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+   ```bash
+   npm install
+   ```
 
-## Deploy on Vercel
+4. Inicie o servidor de desenvolvimento:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+   ```bash
+   npm run dev
+   ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+5. Acesse a aplicação no navegador:
+
+   ```
+   http://localhost:3000
+   ```
+
+## Melhorias Futuras
+
+- Persistência de dados no localStorage ou banco de dados.
+- Implementação de testes unitários.
+- Melhorias na acessibilidade e estilização.
+- Implementação de app para dispositivos móveis.
+
+## Contribuição
+
+Contribuições são bem-vindas! Sinta-se à vontade para abrir issues ou enviar pull requests com melhorias e correções.
+
+## Licença
+
+Este projeto é licenciado sob a [GPLv3](LICENSE).
+
+---
+
+**Desenvolvido por:** [Davi Henrique](https://github.com/davihenriquedev1)
