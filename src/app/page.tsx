@@ -1,101 +1,77 @@
-import Image from "next/image";
+"use client";
 
-export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+import { TodoItem } from "@/components/TodoItem";
+import { Item } from "@/types/Item";
+import { KeyboardEvent, useState } from "react";
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
-  );
+const Page = () => {
+	const [list, setList] = useState<Item[]>([]);
+	const [input, setInput] = useState('');
+	const [recentlyUpdatedItem, setRecentlyUpdatedItem] = useState<null | number>(null);
+
+	const handleAddItem = (id:number) => {
+		setRecentlyUpdatedItem(id)
+		setList(state => [
+			...state, {
+			id:id, name:input, done:false
+		}].sort((a,b) => Number(a.done) - Number(b.done))
+		)
+		setInput('')
+		setTimeout(() => setRecentlyUpdatedItem(null), 300);
+	};
+
+	const handleKeyUp = (event: KeyboardEvent) => {
+		if (event.code === "Enter") {
+			handleAddItem(list.length+1);
+		}
+	};
+	
+	const handleToggleDone = (id:number, done:boolean)=> {
+		setRecentlyUpdatedItem(id); // Define o ID do item atualizado
+
+		 // Primeiro atualiza o estado para refletir a mudança sem ordenar ainda
+		setList((prevList) =>
+			[...prevList].map((item) => (item.id === id ? { ...item, done } : item))
+		);
+         // Aguarda 300ms para ordenar a lista (tempo da animação de "levantar")
+    	setTimeout(() => {
+			setList((prevList) =>
+				[...prevList].sort((a, b) => Number(a.done) - Number(b.done))
+			);
+			setTimeout(() => setRecentlyUpdatedItem(null), 300);  // Reseta o ID do item animado depois de tudo
+		}, 300); // Tempo da transição definida em Tailwind (300ms)
+		
+    };
+
+	return (
+		<div className="bg-[#17181F] min-h-screen">
+			<div className="m-auto max-w-[980px] p-2">
+				<header className="m-0 p-0 text-white text-center border-b-[#444] pb-5 font-bold text-2xl">
+					Lista de Tarefas 
+				</header>
+				<main >
+					<div className="flex w-full justify-center items-center mb-3">
+						<div className="flex w-[50%] border border-zinc-600 rounded-md items-center">
+							<input
+								type="text"
+								title="input"
+								className=" rounded-md p-2 border-0 outline-0 bg-transparent text-2xl flex-1 text-[#bdbdbd]"
+								value={input}
+								onChange={e=> setInput(e.target.value)}
+								onKeyUp={handleKeyUp}
+							/>
+							<div className=" text-white px-2 ml-2 text-3xl font-bold cursor-pointer" onClick={()=>handleAddItem(list.length+1)}>+</div>
+						</div>
+					</div>
+					<ul className="flex flex-col w-full justify-center items-center gap-2 transition-all duration-500">
+						{list.map((item)=> (
+							<TodoItem item={item} key={item.id} toggleDone={handleToggleDone} itemMoving={recentlyUpdatedItem === item.id}/>
+						))}
+					</ul>
+				</main>
+			</div>
+		</div>
+	);
 }
+
+export default Page;
